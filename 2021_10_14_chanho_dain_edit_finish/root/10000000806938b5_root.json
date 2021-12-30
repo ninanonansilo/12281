@@ -1,0 +1,20 @@
+{
+	"id": "test",
+	"pw": "test",
+	"setup_place": "Korea",
+	"setup_day": {
+		"year": "2021",
+		"month": "10",
+		"day": "01",
+		"hour": "18",
+		"minute": "53",
+		"second": "37"
+	},
+	"display": {
+		"width": "800",
+		"height": "640"
+	},
+	"max_brightness": "63",
+	"serial": "10000000806938b5",
+	"company_name": "EV첨단소재"
+}

@@ -1,0 +1,20 @@
+{
+	"id": "qpqp",
+	"pw": "qpqp",
+	"setup_place": "feawfewf",
+	"setup_day": {
+		"year": "2021",
+		"month": "12",
+		"day": "12",
+		"hour": "12",
+		"minute": "12",
+		"second": "12"
+	},
+	"display": {
+		"width": "60",
+		"height": "64"
+	},
+	"max_brightness": "62",
+	"serial": "qqqqqqqqqqqqqqqq",
+	"company_name": "11"
+}

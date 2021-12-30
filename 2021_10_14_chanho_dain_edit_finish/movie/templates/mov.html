@@ -1,0 +1,2069 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+    <title>Actvision 영상</title>
+    <link rel="stylesheet" href="{%static 'base.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style>
+        @charset "utf-8";
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body{
+            background-color: #454545;
+            text-align: center;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cont{
+            width: 775px;
+            height: 200px;
+            margin-top: 146px;
+        }
+
+        /*table {width:800}*/
+        .settings, th, td { align-items: center; text-align: center;}  /* 2열 크기*/
+
+        /* 헤드부 */
+        th{
+            background-color: #EEEEEE;
+            color: black;
+            font-weight: 500;
+            font-size: 16px;
+            height: 25px;
+            border-bottom: 5px solid #454545;
+            border-top: 2px solid #C3C3C3;
+            border-left: 2px solid #C3C3C3;
+        }
+        .th_first{ width: 70px;}
+        .th_second{width: 350px;}
+        .th_third{width: 240px;}
+        .odd{ background-color: #EEEEEE; height: 25px; }
+        .even{ background-color: #C8C8C8; height: 25px;}
+        .odd td{ border-left: 2px solid #C3C3C3; border-top: 2px solid #C3C3C3;}
+        .even td{ border-left: 2px solid #F3F3F3; border-top: 2px solid #F3F3F3;}
+
+        #contents{
+            width: 678px;
+            height: 180px;
+            position: relative;
+            overflow: auto;
+            float: left;
+            margin-top: 5px;
+        }
+
+
+        #contents table{
+            table-layout: fixed;
+            border-collapse: collapse;
+
+        }
+
+        .bx_tb1{
+            zoom: 1;
+            height: 100%;
+        }
+
+        #chooseFile {
+            visibility: hidden;
+        }
+
+        .img-btn{  /* 등록 버튼 */
+            color: white;
+            background-color: #636363;
+            width: 60px;
+            height: 28px;
+            padding-top: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .img-btn:hover{
+            background-color: #7a7a7a;
+        }
+
+        .buttons{
+            width: 60px;
+            height: 195px;
+            float: right;
+        }
+
+        .add-btn{ /* 추가 버튼 */
+            background-color: #636363;
+            color: white;
+            width: 60px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 35px;
+            border-radius: 5px;
+        }
+        .dayofweek-btn{ /* 추가 버튼 */
+            background-color: #636363;
+            color: white;
+            width: 27px;
+            height: 27px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 15px;
+            border-radius: 5px;
+        }
+
+        .add-btn:hover{
+            background-color: #7a7a7a;
+        }
+
+        .delete-btn{
+            background-color: #636363;
+            color: red;
+            width: 60px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .delete-btn:hover{
+            background-color: #7a7a7a;
+        }
+
+        /* up 추가 */
+        #popup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        }
+
+        #popup.hide {
+        display: none;
+        }
+
+        #popup.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popup .content {
+            width: 550px;
+            height: 200px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+                color: white;
+                text-align: center;
+                border: 4px solid #333333;
+        }
+
+        #popup .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popup .list-box{
+            background-color: #454545;
+            border:2px solid #888888;
+            height: 28px;
+            width: 340px;
+        }
+
+        #popup table{
+            margin-top: 10px;
+            margin-left: 365px;
+        }
+
+        #popup .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        #popup .okay:hover{
+            background-color: #7a7a7a;
+        }
+
+        #popup .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #popup .cancel:hover{
+            background-color: #7a7a7a;
+        }
+
+        .send-btn{
+            background-color: #636363;
+            color: #08AAE5;
+            width: 60px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .send-btn:hover{
+            background-color: #7a7a7a;
+        }
+
+
+
+        /* up 삭제 */
+
+        #popupDelete {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popupDelete.hide {
+        display: none;
+        }
+
+        #popupDelete.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popupDelete .content {
+            width: 550px;
+            height: 210px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+            border: 4px solid #333333;
+        }
+
+        #popupDelete .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popupDelete table{
+            margin-top: 10px;
+            margin-left: 365px;
+        }
+
+        #popupDelete .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        #popupDelete .okay:hover{
+            background-color: #7a7a7a;
+        }
+
+        #popupDelete .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #popupDelete .cancel:hover{
+            background-color: #7a7a7a;
+        }
+
+        /* up 전송 */
+
+    #popupSend {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        }
+
+        #popupSend.hide {
+        display: none;
+        }
+
+        #popupSend.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popupSend .content {
+            width: 550px;
+            height: 210px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+            border: 4px solid #333333;
+        }
+
+        #popupSend table{
+            margin-top: 10px;
+            margin-left: 365px;
+        }
+
+        #popupSend .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popupSend .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        #popupSend .okay:hover{
+            background-color: #7a7a7a;
+        }
+
+        #popupSend .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #popupSend .cancel:hover{
+            background-color: #7a7a7a;
+        }
+
+        /* 아래 표 */
+
+        .cont-down{
+            width: 775px;
+            height: 200px;
+            margin-top: 60px;
+        }
+
+        #redpointer{
+            width: 28px;
+            height: 25px;
+            border-radius: 5px;
+            float: left;
+        }
+
+        #greenpointer{
+            width: 28px;
+            border-radius: 5px;
+            margin-right: -3px;
+            height: 25px;
+        }
+
+        /* schedule */
+
+        #popups {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popups.hide {
+        display: none;
+        }
+
+        #popups .content {
+            width: 250px;
+            height: 320px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+            border: 4px solid #333333;
+        }
+
+        #popups .title{
+            border-bottom: 1px solid #7C7C7C;
+            height: 30px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        #popups .title span{
+            line-height: 30px;
+        }
+
+        .text-field{
+            background-color: #454545;
+            border: 1px solid #888888;
+            width: 140px;
+            height: 22px;
+            border-radius: 3px;
+            text-decoration: white;
+        }
+
+        #popups .date-startend{
+            height: 110px;
+            border-bottom: 1px solid #7C7C7C;
+        }
+
+        #popups .dateA{
+            width: 84px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #popups .date-time{
+            height: 120px;
+            border-bottom: 1px solid #7C7C7C;
+        }
+
+        #popups .date-time table{
+            height: 30px;
+            margin-top: 15px;
+            margin-bottom: 30px;
+            border-collapse: collapse;
+        }
+
+        #popups .date-time table .middle{
+            color: white;
+            width: 22px;
+        }
+
+        #popups .date-time table .left{
+            background-color: #454545;
+            color: white;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            border: 1px solid #7C7C7C;
+            border-right: none;
+        }
+
+        #popups .date-time table .right{
+            background-color: #454545;
+            color: white;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            border: 1px solid #7C7C7C;
+            border-left: none;
+        }
+
+        #popups .date-time table .center{
+            border: 1px solid #7C7C7C;
+            border-left: none;
+            border-right: none;
+        }
+
+        #popups .date-button td{
+            border: 3px solid #454545;
+        }
+
+        #popups .date-button button{
+            width: 27px;
+            height: 27px;
+            background-color: #454545;
+            color: #5c5c5c;
+            border: 1px solid #5c5c5c;
+        }
+
+        #popups .button-table{
+            margin-left: 85px;
+            margin-top: 5px;
+        }
+
+        #popups .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 65px;
+            height: 30px;
+            cursor: pointer;
+            margin-right: 14px;
+            border-radius: 3px;
+        }
+
+        #popups .okay:hover{
+            background-color: #7a7a7a;
+        }
+
+        #popups .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 65px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        #popups .cancel:hover{
+            background-color: #7a7a7a;
+        }
+
+        /* 아래 파일 삭제 */
+        #popupDelete_under {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        }
+
+        #popupDelete_under.hide {
+        display: none;
+        }
+
+        #popupDelete_under.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popupDelete_under .content {
+            width: 550px;
+            height: 210px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+            border: 4px solid #333333;
+        }
+
+        #popupDelete_under .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popupDelete_under table{
+            margin-top: 10px;
+            margin-left: 365px;
+        }
+
+        #popupDelete_under .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        #popupDelete_under .okay:hover{
+            background-color: #7a7a7a;
+        }
+
+        #popupDelete_under .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #popupDelete_under .cancel:hover{
+            background-color: #7a7a7a;
+        }
+        .logout_btn{
+            border:none;
+            background-color: #636363;
+            color: white;
+            width: 100px;
+            height: 80px;
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        <nav>
+          <div>
+            <ul class="nav-container">
+              <a class="LOGO_img">
+                <img src="{%static 'navLogo.jpg'%}">
+              </a>
+              <li class="nav-item">
+                <a href="{% url 'movie.html' %}" class="nav-link">
+                  <img class="media" id="img" src= "{%static 'clickmedia.jpg'%}" style="width: 128px; height: 100px;">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'image.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'event.jpg'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'settings.html' %}"  class="nav-link">
+                  <img class="media" id="img" src="{%static 'setting.jpg'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'inform.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'inform.jpg'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'register.html' %}" class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register.jpg'%}">
+                  {% else %}
+                  <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register_admin.jpg'%}">
+                  {% endif %}
+                </a>
+              </li>
+              <li class="user_inform">
+                <ul>
+                  <li>ID    :{{userinfo}}</li>
+                  <li name="serial">Serial:{{user.profile.player_serial}}</li>
+                </ul>
+              </li>
+              <li>
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <button class="logout_btn">Logout</button>
+                    </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+    <div class="cont">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting">
+                        <!-- 헤드부 -->
+
+                    <script>
+
+i=1;
+play_list_index = -1;
+video_index = -1;
+list_overlap = 0
+j=1;
+var last_video_index = -1;
+var move_movie_index = -1
+var whichcontentcheck_move;
+$(document).ready(function(){
+
+    var list_context = JSON.parse("{{ context|escapejs }}");
+    //alert(list_context['list_index']);
+    list_overlap = list_context['list_overlap'];
+    play_list_index = list_context['list_index'];
+    move_movie_index = list_context['list_videoindex'];
+
+    whichvideocheck = 'flexCheckDefault' + play_list_index // 임창한 추가
+    $("input:checkbox[id='" + whichvideocheck +"']").prop("checked", true); // 임창한 추가
+
+    move_movie_underindex = 20 + move_movie_index
+    whichcontentcheck_move = 'flexCheckDefault' + move_movie_underindex
+
+
+
+    last_video_index = list_context['list_media'].length
+
+
+
+
+    for(var index=0; index < list_context['list_name'].length; index++) {
+
+    var id_list = "list_Name";
+    var name_list =  document.getElementById(id_list + i); // 파일 이름 받아옴
+    name_list.textContent = list_context['list_name'][index];  // 재생목록 띄우기
+
+    var id_list2 = "up-number_list";
+    var date_list =  document.getElementById(id_list2 + i); // 파일 이름 받아옴
+    date_list.textContent = list_context['list_date'][index];  // 재생목록 띄우기
+
+    i++;
+
+    }
+
+    for(var index=0; index < list_context['list_media'].length; index++) {
+
+    var id_name = "fileName";
+    var name =  document.getElementById(id_name + j); // 파일 이름 받아옴
+    name.textContent = list_context['list_media'][index];
+
+    var schedule = "schedule";
+    var schedule_name =  document.getElementById(schedule + j); // 파일 이름 받아옴
+    schedule_name.textContent = list_context['list_schedule'][index];
+
+
+    j++;
+    }
+
+
+
+});
+                    </script>
+
+                    <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">재생목록</th>
+                            <th class="th_third">등록일</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="0" id="flexCheckDefault0" name="ckbSelect" onclick='checkOnlyOne(this, 0)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name1"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list1"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault1" name="ckbSelect" onclick='checkOnlyOne(this, 1)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name2"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list2"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="2" id="flexCheckDefault2" name="ckbSelect" onclick='checkOnlyOne(this, 2)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name3"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list3"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="3" id="flexCheckDefault3" name="ckbSelect" onclick='checkOnlyOne(this, 3)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name4"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list4"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="4" id="flexCheckDefault4" name="ckbSelect" onclick='checkOnlyOne(this, 4)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name5"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list5"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="5" id="flexCheckDefault5" name="ckbSelect" onclick='checkOnlyOne(this, 5)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name6"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list6"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="6" id="flexCheckDefault6" name="ckbSelect" onclick='checkOnlyOne(this, 6)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name7"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list7"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="7" id="flexCheckDefault7" name="ckbSelect" onclick='checkOnlyOne(this, 7)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name8"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list8"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="8" id="flexCheckDefault8" name="ckbSelect" onclick='checkOnlyOne(this, 8)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name9"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list9"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="9" id="flexCheckDefault9" name="ckbSelect" onclick='checkOnlyOne(this, 9)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name10"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list10"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="10" id="flexCheckDefault10" name="ckbSelect" onclick='checkOnlyOne(this, 10)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name11"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list11"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="11" id="flexCheckDefault11" name="ckbSelect" onclick='checkOnlyOne(this, 11)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name12"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list12"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="12" id="flexCheckDefault12" name="ckbSelect" onclick='checkOnlyOne(this, 12)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name13"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list13"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="13" id="flexCheckDefault13" name="ckbSelect" onclick='checkOnlyOne(this, 13)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name14"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list14"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="14" id="flexCheckDefault14" name="ckbSelect" onclick='checkOnlyOne(this, 14)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name15"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list15"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="15" id="flexCheckDefault15" name="ckbSelect" onclick='checkOnlyOne(this, 15)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name16"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list16"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="16" id="flexCheckDefault16" name="ckbSelect" onclick='checkOnlyOne(this, 16)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name17"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list17"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="17" id="flexCheckDefault17" name="ckbSelect" onclick='checkOnlyOne(this, 17)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name18"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list18"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="18" id="flexCheckDefault18" name="ckbSelect" onclick='checkOnlyOne(this, 18)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name19"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list19"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="19" id="flexCheckDefault19" name="ckbSelect" onclick='checkOnlyOne(this, 19)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name20"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list20"></p></div></td>
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopup(false)" class="add-btn">추가</button>
+                </div>
+                <div id="popup" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록추가
+                        </div>
+                        <p style="margin-top: 25px; height: 65px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; padding-right: 15px;">재생목록이름</span>
+                            <input class="list-box" type="text" id="name_of_list" style="color: white;">
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <button class="okay" onclick="closePopup_list()">확인</button>
+                                    <script>
+function closePopup_list() {
+LoadingWithMask();
+   const popup = document.querySelector('#popup');
+
+   var name_of_list = document.getElementById("name_of_list").value;
+    var id_list = "list_Name";
+    var name_list =  document.getElementById(id_list + i); // 파일 이름 받아옴
+    i++;
+    name_list.textContent = name_of_list;  // 재생목록 띄우기
+
+    var param = {'list' : name_of_list }
+    $.ajax({
+    url : '{% url 'upload_list' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    location.reload();},
+    error: function(){
+        alert('error');}
+    });
+
+    popup.classList.add('hide');   // 창 닫기
+}
+
+                                    </script>
+                                </td>
+                                <td>
+                                    <button class="cancel" onclick="closePopup()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popup.js'%}"></script>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="Delete_popup(false)" class="delete-btn" style="margin-top: 20px;">삭제</button>
+                    <script>
+                        function Delete_popup(hasFilter) {
+
+                            const popup = document.querySelector('#popupDelete');
+
+                            if (hasFilter) {
+                                popup.classList.add('has-filter');
+                            } else {
+                                popup.classList.remove('has-filter');
+                            }
+                            popup.classList.remove('hide');
+
+
+                            }
+
+                    </script>
+                </div>
+                <div id="popupDelete" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록삭제
+                        </div>
+                       <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                           <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                       </p>
+                       <table>
+                           <tr>
+                               <td>
+                                    <button class="okay" onclick="Delete_play_list()">확인</button>
+                                </td>
+                               <td>
+                                    <button class="cancel" onclick="closePopupDelete()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                               <script>
+
+                                    function Delete_play_list() {
+                                    LoadingWithMask();
+                                    if(play_list_index == -1)
+                                        {
+                                            alert("삭제할 목록을 먼저 선택하세요.")
+                                            return
+                                        }
+                                    const popup = document.querySelector('#popupDelete');
+                                    popup.classList.add('hide');
+
+                                    var param = {'play_list_index' : play_list_index, };
+                                    $.ajax({
+                                    url : '{% url 'delete_play_list' %}',
+                                    type : 'POST',
+                                    data : param,
+                                    success:function(data){
+                                    location.reload();
+                                    },
+                                    error: function(){
+                                        alert('error');}
+                                    });
+                                }
+
+                               </script>
+
+                <script src="{%static 'popupDelete.js'%}"></script>
+            </div>
+
+            <div id="aside">
+                <div class="button" >
+                    <button onclick="showPopupSend(false)" class="send-btn">전송</button>
+                </div>
+                <div id="popupSend" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록전송
+                        </div>
+                       <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                           <span style="font-size: 14px; text-align: center;">전송 하시겠습니까?</span>
+                       </p>
+                       <table>
+                           <tr>
+                               <td>
+
+                                    <button class="okay" onclick="play_list_trans()">확인</button>
+                               </td>
+                               <script>
+                                   function play_list_trans() {
+                                   LoadingWithMask();
+                                   if(list_overlap == 1)
+                                   {
+                                        alert("재생시간이 중복되는 파일들이 있습니다.")
+                                        location.reload();
+                                   }
+                                   else {
+
+                       if (play_list_index == -1) {
+                       const popup = document.querySelector('#popupSend');
+                        popup.classList.add('hide');
+                        alert("재생목록을 선택해주세요");
+                        location.reload();
+                       }
+                       else {
+    var param = {'index' : play_list_index, };
+    $.ajax({
+    url : '{% url 'play_list_trans' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    location.reload();
+    },
+    error: function(){
+        alert('error');
+        location.reload();}
+
+    });
+
+}
+
+  const popup = document.querySelector('#popupSend');
+  popup.classList.add('hide');
+                       }
+
+}
+                               </script>
+                               <td>
+                                    <button class="cancel" onclick="closePopupSend()">취소</button>
+                               </td>
+                           </tr>
+                       </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupSend.js'%}"></script>
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-down">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting">
+                        <!-- 헤드부 -->
+
+                    <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">파일이름</th>
+                            <th class="th_third">재생일정</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault20"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,0)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName1"></p></div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="schedule1"></p></div>
+                            </td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault21"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,1)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="fileName2"></p></div></td>
+                            <td><div id="my_delete_div"><p id="schedule2"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault22"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,2)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName3"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule3"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault23"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,3)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName4"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule4"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault24"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,4)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName5"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule5"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault25"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,5)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName6"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule6"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault26"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,6)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName7"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule7"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault27"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,7)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName8"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule8"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault28"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,8)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName9"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule9"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault29"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,9)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName10"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule10"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault30"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,10)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName11"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule11"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault31"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,11)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName12"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule12"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault32"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,12)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName13"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule13"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault33"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,13)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName14"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule14"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault34"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,14)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName15"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule15"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault35"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,15)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName16"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule16"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault36"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,16)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName17"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule17"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault37"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,17)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName18"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule18"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault38"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,18)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName19"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule19"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault39"
+                                           name="video_check" onclick="checkOnlyOneUnder(this,19)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName20"></p></div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="schedule20"></p></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+                    <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <script>
+function redbutton()
+{
+
+
+LoadingWithMask()
+    if(video_index == -1)
+    {
+        alert("항목을 선택하세요.")
+        video_index = -1;
+        location.reload();
+        return
+    }
+    if(last_video_index - 1 <= video_index )
+    {
+        alert("마지막 인덱스의 비디오입니다.")
+        video_index = -1;
+        location.reload();
+        return
+    }
+
+    var param = {'play_list_index' : play_list_index, 'video_index' : video_index,};
+    $.ajax({
+    url : '{% url 'downmove_movie' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+     location.reload();
+
+    },
+    error: function(){
+
+        alert('error');}
+    });
+
+}
+
+
+setTimeout(function redbuttoncheck()
+{
+
+         if(last_video_index - 1 <= video_index )
+        {
+            return
+        }
+        else{
+            $("input:checkbox[id='" + whichcontentcheck_move +"']").prop("checked", true); // 임창한 추가
+            video_index = move_movie_index
+        }
+
+}, 50);
+
+function greenbutton()
+{
+LoadingWithMask()
+    if(video_index == -1)
+    {
+        alert("항목을 선택하세요.")
+        video_index = -1;
+        location.reload();
+        return
+    }
+    if(0 == video_index)
+    {
+        alert("첫번째 인덱스의 비디오입니다.")
+        video_index = -1;
+        location.reload();
+        return
+    }
+    if(last_video_index - 1 < video_index )
+    {
+         alert("올바르지 않은 인덱스입니다.")
+         location.reload();
+        return
+    }
+
+    var param = {'play_list_index' : play_list_index, 'video_index' : video_index,};
+    $.ajax({
+    url : '{% url 'upmove_movie' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+     location.reload();
+    },
+    error: function(){
+        alert('error');}
+    });
+
+}
+setTimeout(function greenbuttoncheck()
+{
+
+          if(0 == video_index)
+        {
+            return
+        }
+            if(last_video_index - 1 < video_index )
+        {
+            return
+        }
+        else{
+            $("input:checkbox[id='" + whichcontentcheck_move +"']").prop("checked", true); // 임창한 추가
+            video_index = move_movie_index
+        }
+
+}, 50);
+
+                    </script>
+                    <img src="{% static 'redpointer.png'%}" id="redpointer" class="img-btn"
+                         onclick="redbutton(); redbuttoncheck();">
+                </div>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'greenpointer.png'%}" class="img-btn" onclick="greenbutton()" id="greenpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">{% csrf_token %}
+                    <div class="button">
+                        <label for="chooseFile">
+                            <div class="img-btn" align="center">등록</div>
+                        </label>
+                    </div>
+                    <input type="file" id="chooseFile" name="chooseFile" accept=".mp4" onchange="loadFile(this)">
+                    <script>
+                                        function LoadingWithMask() {
+
+                        var maskHeight = $(document).height();
+                        var maskWidth  = window.document.body.clientWidth;
+
+
+                        var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#B4B4BA; display:none; left:0; top:0;'></div>";
+                        var loadingImg ='';
+
+                        loadingImg +="<div id='loadingImg'>";
+                        loadingImg +=" <img src= /static/Spinner-0.7s-241px.gif style='position: relative; display: block; margin: 0px auto;'/>";
+                        loadingImg +="</div>";
+
+                        $('body')
+                            .append(mask)
+                            .append(loadingImg)
+
+
+                        $('#mask').css({
+                                'width' : maskWidth
+                                ,'height': maskHeight
+                                ,'opacity' :'0.3'
+                        });
+
+                        //마스크 표시
+                        $('#mask').show();
+
+                        //로딩중 이미지 표시
+                        $('#loadingImg').show();
+                    }
+
+
+                        function loadFile(input) {
+                            LoadingWithMask()
+                            var file = input.files[0];
+                            var formData = new FormData();
+                            formData.append("video", file);
+                            formData.append("video_name", file.name);
+                            formData.append("list_name", play_list_index);
+
+                            var id_name = "fileName";
+                            var name =  document.getElementById(id_name + j); // 파일 이름 받아옴
+                            j++;
+                            name.textContent = file.name;
+
+                            $.ajax({
+                                type: "POST",
+                                enctype: 'multipart/form-data',
+                                url : '{% url 'upload_video' %}',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                timeout: 600000,
+                                success: function (data) {
+                                location.reload();
+                                },
+                                error: function (e) {
+                                    alert('fail');
+                                }
+                            });
+
+                        }
+
+                    </script>
+                </form>
+
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopupDelete_under(false)" class="delete-btn">삭제</button>
+
+                </div>
+                <div id="popupDelete_under" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                             재생목록삭제
+                        </div>
+                        <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                     <button class="okay" onclick="Delete_video()">확인</button>
+                                 </td>
+                                <script>
+                                        function Delete_video() {
+
+                                        LoadingWithMask();
+
+                                        if(video_index == -1)
+                                        {
+                                            alert("삭제할 목록을 먼저 선택하세요.")
+                                            location.reload()
+                                            return
+                                        }
+                                    const popup = document.querySelector('#popupDelete_under');
+                                    popup.classList.add('hide');
+
+
+                                    var param = {'play_list_index' : play_list_index,
+                                    'video_index' : video_index,};
+                                    $.ajax({
+                                    url : '{% url 'delete_video' %}',
+                                    type : 'POST',
+                                    data : param,
+                                    success:function(data){
+                                    location.reload();
+                                    },
+                                    error: function(){
+                                        alert('error');}
+                                    });
+                                }
+
+
+
+                                </script>
+                                <td>
+                                     <button class="cancel" onclick="closePopupDelete_under()">취소</button>
+                                 </td>
+                             </tr>
+                         </table>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function showPopupDelete_under(hasFilter) {
+                    const popup = document.querySelector('#popupDelete_under');
+
+                if (hasFilter) {
+                    popup.classList.add('has-filter');
+                } else {
+                    popup.classList.remove('has-filter');
+                }
+
+                popup.classList.remove('hide');
+                }
+
+                function closePopupDelete_under() {
+                    const popup = document.querySelector('#popupDelete_under');
+                popup.classList.add('hide');
+                }
+
+            </script>
+
+
+            <div id="aside">
+                <div class="button" style="margin-top: 20px;">
+                    <button onclick="showPopups(false)" style="margin-top: 0px;" class="send-btn">일정</button>
+                </div>
+                <div id="popups" class="hide">
+                    <div class="content">
+                        <div class="title">
+                            <span>재생일정</span>
+                        </div>
+                        <div class="date-startend" align="center">
+                            <table style="height: 105px; padding-top: 8px; padding-bottom: 8px; ">
+                                <tr>
+                                    <td class="dateA">
+                                        시작
+                                    </td>
+                                    <td>
+                                        <input type="date" id="start_day" name="start_day" class="text-field"
+                                               style="color: white; ">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="dateA">
+                                        종료
+                                    </td>
+                                    <td>
+                                        <input type="date" id="finish_day" name="finish_day" class="text-field"
+                                               style="color: white; ">
+                                        <script>
+                                            let dateInput = document.getElementById('start_day');
+                                            dateInput.valueAsDate = new Date();
+
+                                            let dateInput1 = document.getElementById('finish_day');
+                                            dateInput1.valueAsDate = new Date();
+
+                                        </script>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="date-time" align="center">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="text" id="start_hour" class="left" value="00" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                    </td>
+                                    <td class="center">
+                                        :
+                                    </td>
+                                    <td>
+                                        <input type="text" id="start_min" class="right" value="00" maxlength="2"
+                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+                                    </td>
+                                    <td class="middle">
+                                        ~
+                                    </td>
+                                    <td>
+                                        <input type="text" id="finish_hour" class="left" value="23" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                    </td>
+                                    <td class="center">
+                                        :
+                                    </td>
+                                    <td>
+                                        <input type="text" id="finish_min" class="right" value="59" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="date-button">
+                                <script>
+var count_sun = 0;
+var count_mon = 0;
+var count_tues = 0;
+var count_wed = 0;
+var count_thurs = 0;
+var count_fri = 0;
+var count_sat = 0;
+
+
+var property_mon = document.getElementById("button_mon");
+var property_tues = document.getElementById("button_tues");
+var property_wed = document.getElementById("button_wed");
+var property_thurs = document.getElementById("button_thurs");
+var property_fri = document.getElementById("button_fri");
+var property_sat = document.getElementById("button_sat");
+
+    function sun()
+    {
+        var property_sun = document.getElementById("button_sun");
+        if (count_sun == 0){
+        count_sun = 1;
+        property_sun.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_sun = document.getElementById("button_sun");
+         count_sun = 0;
+         property_sun.style.backgroundColor = "#606060"
+        }
+
+    }
+    function mon()
+    {
+        var property_mon = document.getElementById("button_mon");
+        if (count_mon == 0){
+        count_mon = 1;
+        property_mon.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_mon = document.getElementById("button_mon");
+         count_mon = 0;
+         property_mon.style.backgroundColor = "#606060"
+        }
+
+    }
+    function tues()
+    {
+        var property_tues = document.getElementById("button_tues");
+        if (count_tues == 0){
+        count_tues = 1;
+        property_tues.style.backgroundColor = "#202020"
+                        }
+        else{
+     var property_tues = document.getElementById("button_tues");
+         count_tues = 0;
+         property_tues.style.backgroundColor = "#606060"
+        }
+
+    }
+    function wed()
+    {
+        var property_wed = document.getElementById("button_wed");
+        if (count_wed == 0){
+        count_wed = 1;
+        property_wed.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_wed = document.getElementById("button_wed");
+         count_wed = 0;
+         property_wed.style.backgroundColor = "#606060"
+        }
+
+    }
+    function thurs()
+    {
+        var property_thurs = document.getElementById("button_thurs");
+        if (count_thurs == 0){
+        count_thurs = 1;
+        property_thurs.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_thurs = document.getElementById("button_thurs");
+         count_thurs = 0;
+         property_thurs.style.backgroundColor = "#606060"
+        }
+
+    }
+    function fri()
+    {
+        var property_fri = document.getElementById("button_fri");
+        if (count_fri == 0){
+        count_fri = 1;
+        property_fri.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_fri = document.getElementById("button_fri");
+         count_fri = 0;
+         property_fri.style.backgroundColor = "#606060"
+        }
+
+    }
+    function sat()
+    {
+        var property_sat = document.getElementById("button_sat");
+        if (count_sat == 0){
+        count_sat = 1;
+        property_sat.style.backgroundColor = "#202020"
+                        }
+        else{
+          var property_sat = document.getElementById("button_sat");
+         count_sat = 0;
+         property_sat.style.backgroundColor = "#606060"
+        }
+
+    }
+
+
+
+
+                                </script>
+                                <tr>
+                                    <button type="button" id="button_sun" class="dayofweek-btn" onclick="sun()">일
+                                    </button>
+                                    <button type="button" id="button_mon" class="dayofweek-btn" onclick="mon()">월
+                                    </button>
+                                    <button type="button" id="button_tues" class="dayofweek-btn" onclick="tues()">화
+                                    </button>
+                                    <button type="button" id="button_wed" class="dayofweek-btn" onclick="wed()">수
+                                    </button>
+                                    <button type="button" id="button_thurs" class="dayofweek-btn" onclick="thurs()">목
+                                    </button>
+                                    <button type="button" id="button_fri" class="dayofweek-btn" onclick="fri()">금
+                                    </button>
+                                    <button type="button" id="button_sat" class="dayofweek-btn" onclick="sat()">토
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                        <table class="button-table">
+                            <tr>
+                                <td>
+                                    <button class="okay" onclick="play_schedule()">확인</button>
+                                </td>
+                                <script>
+            function play_schedule() {
+
+            if (video_index == -1) {
+            }
+            else {
+            var start_day = document.getElementById("start_day").value;
+            var finish_day = document.getElementById("finish_day").value;
+
+            var start_hour = document.getElementById("start_hour").value;
+            var start_min = document.getElementById("start_min").value;
+
+            var finish_hour = document.getElementById("finish_hour").value;
+            var finish_min = document.getElementById("finish_min").value;
+
+            var param = {'start_day': start_day, 'finish_day': finish_day, 'start_hour': start_hour,
+            'start_min':start_min , 'finish_hour': finish_hour, 'finish_min': finish_min,
+            'video_index':video_index, 'play_list_index' : play_list_index, 'sun' : count_sun, 'mon' : count_mon ,
+            'tues' : count_tues, 'wed' : count_wed, 'thurs' : count_thurs, 'fri' : count_fri, 'sat' : count_sat };
+            
+            var amount_start = (start_hour * 60) + start_min;
+            var amount_finish = (finish_hour * 60) + finish_min;
+
+            if(amount_start >= amount_finish){
+                alert("시간설정이 잘못되었습니다.");
+                return;
+            }
+
+
+            $.ajax({
+            url : '{% url 'play_schedule' %}',
+            type : 'POST',
+            data : param,
+            success:function(data){
+            location.reload()
+ },
+            error: function(){
+            alert('error');}
+            });
+            }
+
+            const popup = document.querySelector('#popups');
+            popup.classList.add('hide');
+
+
+            }
+                                </script>
+                                <td>
+                                    <button class="cancel" onclick="closePopups()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupSchedule.js'%}"></script>
+            </div>
+
+        </div>
+    </div>
+        <!-- 체크박스 클릭 하나만 할 수 있도록 -->
+        <script>
+
+            function checkOnlyOne(element, index) {
+
+            videoalreadycheck = 'flexCheckDefault' + index // 임창한 추가
+            if(videoalreadycheck == whichvideocheck)
+            {
+            element.checked = false;
+            whichvideocheck = -1
+            play_list_index = -1
+
+            return
+            }
+            else
+            {
+            const checkboxes = document.getElementsByName("ckbSelect");
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+                element.checked = true;
+
+            var param = {'index' : index };
+            $.ajax({
+            url : '{% url 'video_list' %}',
+            type : 'POST',
+            data : param,
+            success:function(data){
+             location.reload();
+            },
+            error: function(){
+                alert('error');}
+            });
+            }
+
+            }
+
+whichcontentcheck = -1
+    function checkOnlyOneUnder(element, index) {
+
+    if(whichcontentcheck == index)
+    {
+        element.checked = false;
+        whichcontentcheck = -1
+        video_index = -1
+        return
+    }
+    else{
+    const checkboxes = document.getElementsByName("video_check");
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+                element.checked = true;
+
+            video_index = index;
+
+            whichcontentcheck = index
+    }
+            }
+
+        </script>
+</body>
+{%endblock content%}

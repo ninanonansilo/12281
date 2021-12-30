@@ -1,0 +1,636 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+    <link rel="stylesheet" href="{%static 'base.css'%}">
+    <script src="{%static 'register.js'%}"></script>
+
+    <title>Actvision 등록</title>
+    <style>
+        .box{
+            margin: 0 auto;
+            width: 400px;
+            height: 500px;
+            border:3px solid #333333;
+            margin-top: 10%;
+            border-radius: 8px;
+
+        }
+
+        .first-table{
+            text-align: center;
+            margin-top: 25px;
+            height: 375px;
+            width: 380px;
+        }
+
+        .keyward{
+            width: 150px;
+            color: white;
+        }
+
+        .keyboard{
+            width: 250px;
+        }
+
+        .text-field{
+            background-color: #454545;
+            border: 1px solid #888888;
+            width: 220px;
+            height: 24px;
+            border-radius: 3px;
+            color: white
+        }
+
+        .check-btn {
+            font-size: 14px;
+            border: none;
+            height: 30px;
+            background-color: #636363;
+            color: white;
+            width: 120px;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+        .check-btn:hover{background-color: #7a7a7a;}
+
+        .submit-btn {
+            font-size: 14px;
+            border: none;
+            height: 30px;
+            background-color: #636363;
+            color: white;
+            width: 60px;
+            font-weight: 600;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .submit-btn:hover{background-color: #7a7a7a;}
+
+        .bottom{
+            border-top: 2px solid #333333;
+            margin-top: 50px;
+        }
+
+        .bottom table{
+            height: 50px;
+            margin-left: 30px;
+        }
+
+        .bottom table .first{
+            width: 205px;
+        }
+
+        .bottom table .second{
+            width: 70px;
+        }
+
+        /* 조회 팝업 */
+        #popupCheck {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popupCheck.hide {
+            display: none;
+        }
+
+        #popupCheck.has-filter {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popupCheck .content {
+            height: 440px;
+            background: rgb(69, 69, 69);
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+            border:5px solid #333333;
+        }
+
+        #popupCheck .TableBox{
+            height: 375px;
+            position: relative;
+            overflow: auto;
+            overflow-x: hidden;
+        }
+
+        #popupCheck .popup-table{
+            width: 800px;
+            margin-left: -0.5px;
+            color: black;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        #popupCheck .popup-table th:nth-child(1){
+            width: 60px;
+        }
+
+        #popupCheck .popup-table th{
+            width: 100px;
+            height: 20px;
+            font-size: 14px;
+            border-left: 2px solid rgb(190, 190, 190);
+            border-bottom: 2px solid rgb(190, 190, 190);
+            background-color: rgb(238, 238, 238);
+            border-bottom: 5px solid rgb(68, 68, 68);
+        }
+        #popupCheck .popup-table td{
+            text-align: center;
+            font-size: 10px;
+        }
+        #popupCheck .popup-table td:nth-child(3) {
+            text-align: center;
+            font-size: 10px;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+            width: 100px;
+        }
+
+        #popupCheck .popup-table td:nth-child(4) {
+            text-align: center;
+            font-size: 10px;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+            width: 100px;
+        }
+
+        #popupCheck .popup-table tr:nth-child(2n) td{
+            height: 20px;
+            border: 2px solid rgb(190, 190, 190);
+            background-color: rgb(238, 238, 238);
+        }
+
+        #popupCheck .popup-table tr:nth-child(2n-1) td{
+            height: 20px;
+            border: 2px solid rgb(238, 238, 238);
+            background-color: rgb(190, 190, 190);
+        }
+
+
+
+
+        #popupCheck .popup-table .form-check{
+            text-align: center;
+        }
+
+        #popupCheck .button-table{
+            margin-right: 20px;
+            margin-top: 15px;
+        }
+
+        #popupCheck .button-table td{
+            width: 85px;
+        }
+
+        #popupCheck .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            right: 0;
+            height: 30px;
+            border-radius: 3px;
+        }
+        #popupCheck .okay:hover{background-color: #7a7a7a;}
+
+        #popupCheck .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            border-radius: 3px;
+        }
+
+        #popupCheck .cancel:hover{background-color: #7a7a7a;}
+
+
+        /* 등록 팝업 */
+        #popup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popup.hide {
+            display: none;
+        }
+
+        #popup.has-filter {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popup .content {
+            width: 550px;
+            height: 200px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+            border:3px solid #333333;
+        }
+
+
+
+        #popup .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popup .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            border-radius: 3px;
+        }
+        #popup .okay:hover{background-color: #7a7a7a;}
+
+        #popup .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        #popup .cancel:hover{background-color: #7a7a7a;}
+
+        .checkBtn{
+            border:none;
+            background-color: #636363;
+            color:white;
+            width: 15px;
+            height: 15px;
+            font-size: 10px;
+        }
+        .checkBtn:hover{background-color: #7a7a7a;}
+        .keyboard div{
+            color: red;
+            font-size: 10px;
+            margin-bottom: -15px;
+            margin-left: 10px;
+            text-align: left;
+        }
+        .logout_btn{
+            border:none;
+            background-color: #636363;
+            color: white;
+            width: 100px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body bgcolor="#454545">
+    <header>
+        <nav>
+          <div>
+            <ul class="nav-container">
+                <a href="{% url 'login.html' %}" class="LOGO_img">
+                    <img src="{%static 'navLogo.jpg'%}">
+                </a>
+              <li class="nav-item">
+                <a href="{% url 'movie.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'media_admin.png'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'image.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'event_admin.png'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'settings.html' %}"  class="nav-link">
+                  <img class="media" id="img" src="{%static 'setting_admin.png'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'inform.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'inform.jpg'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'register.html' %}" class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register.jpg'%}">
+                  {% else %}
+                  <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register_admin.jpg'%}">
+                  {% endif %}
+                </a>
+              </li>
+              <li class="user_inform">
+                <ul>
+                  <li>ID    :{{userinfo}}</li>
+                  <li name="serial">Serial:{{user.profile.player_serial}}</li>
+                </ul>
+              </li>
+              <li>
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <button class="logout_btn">Logout</button>
+                    </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <div class="box">
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <table align="center" class="first-table">
+                <tr>
+                    <td class="keyward">
+                        ID
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value="{{username}}" name="username" class="text-field" id="option1"
+                        placeholder="영어 소문자만 허용 (최대 16자리)"/>
+                        {% if field_error != null %}
+                            <div>{{field_error}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        PW
+                    </td>
+                    <td class="keyboard">
+                        <input type="password" value ="{{password}}" name="password" class="text-field"
+                        placeholder="특수문자, 숫자, 대/소문자 구분 (최대 16자리)">
+                        {% if field_error_pw != null %}
+                        <div>{{field_error_pw}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        설치장소
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value="{{user_setup_place}}" name="setup_place" class="text-field" id="option3"
+                        />
+                        {% if field_error_setup_place != null %}
+                        <div>{{field_error_setup_place}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        설치일
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value="{{user_setup_day}}" name="setup_day"  class="text-field" id="option4" placeholder="2021/00/00 00:00:00"/>
+                        {% if field_error_setup_day != null %}
+                        <div>{{field_error_setup_day}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        업체명
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value="{{user_company_name}}" name="company_name" class="text-field" id="option5">
+                        {% if field_error_company_name != null %}
+                        <div>{{field_error_company_name}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        해상도
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value= "{{user_display}}" name="display" class="text-field" id="option6"
+                        pattern="\d{2}[\x]\d{2}" placeholder="80x64(가운데 'x' 반드시 소문자)">
+                        {% if field_error_display != null %}
+                        <div>{{field_error_display}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        최대 밝기
+                    </td>
+                    <td class="keyboard">
+                        <input type="text" value="{{user_max_brgt}}" name="max_brgt" class="text-field" id="option7"
+                        placeholder="0과 63 사이 정수 입력">
+                        {% if field_error_max_brgt != null %}
+                        <div>{{field_error_max_brgt}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="keyward">
+                        플레이어 serial
+                    </td>
+                    <td class="keyboard">
+                        <input type="text"value = "{{user_player_serial}}" name="player_serial" class="text-field" id="option8">
+                        {% if field_error_player_serial != null %}
+                        <div>{{field_error_player_serial}}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="hidden_id" class="text-field" id="hidden_field" style="display: none;" />
+                    </td>
+                </tr>
+            </table>
+            <hr style="border: 1px solid #333333; margin-top: 45px;">
+            <button type="reset" class="submit-btn" onclick="clearInput()" style="float: right; margin-right: 20px;">취소</button>
+            <input value="등록" type="button" type="submit" class="submit-btn" onclick="showPopup(false)"
+                style="float: right; margin-right: 15px;">
+
+
+                <!--등록하시겠습니까-->
+                <div id="popup" class="hide">
+                    <div class="content">
+                        <div class="title">
+                            사용자 등록
+                        </div>
+                        <p style="height: 75px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; line-height: 60px;">등록하시겠습니까?</span>
+                        </p>
+                        <div align="right" style="padding-right:20px;">
+                            <span>
+                                <button type="submit"  class="okay">확인</button>
+                            </span>
+                            <input value="취소" class="cancel" onclick="closePopup()"/>
+                        </div>
+                    </div>
+                </div>
+
+        </form>
+        <button  class="check-btn" onclick="showPopupCheck_z(false)" style="float: left; margin-left: 25px;">조회</button>
+
+
+            <!-- 조회 팝업창 -->
+            <div id="popupCheck" class="hide">
+                <div class="content">
+                    <div class="TableBox">
+                        <table class="popup-table" id="popup-table">
+                            <tr>
+                                <th>선택</th>
+                                <th>ID</th>
+                                <th>PW</th>
+                                <th>설차장소</th>
+                                <th>설치일</th>
+                                <th>업체명</th>
+                                <th>해상도</th>
+                                <th>최대 밝기</th>
+                                <th>Serial</th>
+                            </tr>
+                           {% for all in all_db %}
+                           <tr>
+                                <td><input type="checkbox" class="checkBtn" name="ckbSelect" onclick="checkOnlyOneRegister(this)"/></td>
+                                <td>{{all.username}}</td>
+                                <td>*******</td>
+                                <td>{{all.profile.setup_place}}</td>
+                                <td>{{all.profile.setup_day}}</td>
+                                <td>{{all.profile.company_name}}</td>
+                                <td>{{all.profile.display}}</td>
+                                <td>{{all.profile.max_brgt}}</td>
+                                <td>{{all.profile.player_serial}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <table align=right class="button-table">
+                        <tr>
+                            <td>
+                                <button class="okay" onclick="PopupCheck()">확인</button>
+                            </td>
+                            <td>
+                                <button class="cancel" onclick="closePopupCheck()">취소</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+    </div>
+
+    <script>
+        /* 등록 팝업 */
+        function showPopup(hasFilter) {
+        const popup = document.querySelector('#popup');
+
+        if (hasFilter) {
+            popup.classList.add('has-filter');
+        } else {
+            popup.classList.remove('has-filter');
+        }
+
+        popup.classList.remove('hide');
+        }
+
+        function closePopup() {
+        const popup = document.querySelector('#popup');
+        popup.classList.add('hide');
+        }
+        /* 조회 팝업 확인*/
+
+        function showPopupCheck_z(hasFilter) {
+            const popupCheck = document.querySelector('#popupCheck');
+            popupCheck.classList.remove('hide');
+        }
+
+        function PopupCheck() {
+            const popupCheck = document.querySelector('#popupCheck');
+            popupCheck.classList.add('hide');
+        }
+
+        /* 조회 팝업 취소*/
+
+        function closePopupCheck() {
+        const popupCheck = document.querySelector('#popupCheck');
+        var el = document.getElementsByClassName('text-field');
+                    for(var i=0; i<el.length; i++){
+                        el[i].value = '';
+                    }
+        popupCheck.classList.add('hide');
+
+        }
+
+        /* 체크박스 하나만 선택 */
+        function checkOnlyOneRegister(element) {
+        const checkboxes = document.getElementsByName("ckbSelect");
+
+        checkboxes.forEach((cb) => {
+            cb.checked = false;
+        })
+
+        element.checked = true;
+        }
+
+        /* 체크박스 선택 후 확인을 누른경우*/
+        // 버튼 클릭시 Row 값 가져오기
+        $(".checkBtn").click(function(){
+
+         var str = ""
+         var tdArr = new Array();   // 배열 선언
+         var checkBtn = $(this);
+
+         // checkBtn.parent() : checkBtn의 부모는 <td>이다.
+         // checkBtn.parent().parent() : <td>의 부모이므로 <tr>이다.
+         var tr = checkBtn.parent().parent();
+         var td = tr.children();
+
+         console.log("클릭한 Row의 모든 데이터 : "+tr.text());
+
+         var userid = td.eq(1).text();
+         var userpw = td.eq(2).text();
+         var setup_place = td.eq(3).text();
+         var setup_date = td.eq(4).text();
+            var company_name = td.eq(5).text();
+            var display = td.eq(6).text();
+            var max_brgt = td.eq(7).text();
+            var serial_number = td.eq(8).text();
+
+         // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+         td.each(function(i){
+            tdArr.push(td.eq(i).text());
+         });
+
+         $("#option1").val(userid)
+            $("#option2").val(userpw)
+            $("#option3").val(setup_place)
+            $("#option4").val(setup_date)
+            $("#option5").val(company_name)
+            $("#option6").val(display)
+            $("#option7").val(max_brgt)
+            $("#option8").val(serial_number)
+
+            $("#hidden_field").val(userid)
+      });
+
+        /* 텍스트박스 지우는 부분 */
+        function clearInput(){    
+            var el = document.getElementsByClassName('text-field');
+            for(var i=0; i<el.length; i++){
+                el[i].value = '';
+            }
+        }
+    </script>
+</body>
+{%endblock content%}

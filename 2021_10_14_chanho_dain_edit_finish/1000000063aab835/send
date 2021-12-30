@@ -1,0 +1,39 @@
+﻿[
+	{
+		"time": {
+			"year": "2021",
+			"month": "10",
+			"day": "15",
+			"hour": "13",
+			"minute": "16",
+			"second": "48",
+			"alltime": "20211015131648"
+		},
+		"type": "video",
+		"action": "play",
+		"title": [
+			"K21 장갑차 수중도하 중에 기관포 갈겨버리기.mp4",
+			"1m_3.mp4",
+			"R.E.M. - Losing My Religion (Official Music Video).mp4",
+			"스타트업 13~16회모음.mp4",
+			"Leddar.mp4",
+			"5.mp4",
+			"6.mp4",
+			"test.mp4",
+			"Automated Driving in fog with 1550 nm LiDAR.mp4"
+		]
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "01",
+			"day": "01",
+			"hour": "00",
+			"minute": "00",
+			"second": "00",
+			"alltime": "99990101000000"
+		},
+		"type": "video",
+		"action": "stop"
+	}
+]

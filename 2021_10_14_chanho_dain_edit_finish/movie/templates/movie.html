@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+{%block content%}
+{%load static%}
+<head>
+    <link rel="stylesheet" href="{%static 'MovieStyle.css'%}">
+</head>
+<body bgcolor="#454545">
+    <div id="section">
+        <table align="left" class="upper-table"> <!-- cellspacing='0' is important, must stay -->
+
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th style="width: 70px;">선택</th>
+                    <th style="width: 215px;">파일 이름</th>
+                    <th style="width: 165px;">재생 일정</th>
+                </tr>
+            </thead>
+            <!-- Table Header -->
+
+            <!-- Table Body -->
+            <tbody>
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                </tr><!-- Table Row -->
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                          </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr><!-- Darker Table Row -->
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+            <!-- Table Body -->
+
+        </table>
+    </div>
+
+    <!--추가 팝업-->
+    <div class="buttons">
+            <div id="aside" style="position: absolute; top: 181px; left: 58.5%; right: auto;;">
+        <div class="button">
+                <button onclick="showPopup(false)" style="margin-top: 0px;" class="add-btn">추가</button>
+        </div>
+        <div id="popup" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    재생목록추가
+                </div>
+               <p style="margin-top: 25px; height: 65px; border-bottom: #363636 4px solid; ">
+                   <span style="font-size: 14px; padding-right: 15px;">재생목록이름</span>
+                   <input class="list-box" type="text" style="color: white;">
+               </p>
+               <div align="right" style="    padding-right:20px;">
+                <span style="padding-right: 10px;">
+                    <button class="okay" onclick="closePopup()">확인</button>
+                </span>
+                <button class="cancel" onclick="closePopup()">취소</button>
+               </div>
+            </div>
+        </div>
+        <script src="{%static 'popup.js'%}"></script>
+    </div>
+
+    <div id="aside" style="position: absolute; top:246px; left: 58.5%;">
+        <div class="button">
+            <button onclick="showPopupDelete(false)" style="margin-top: 0px;" class="delete-btn">삭제</button>
+        </div>
+        <div id="popupDelete" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    재생목록삭제
+                </div>
+               <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                   <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+               </p>
+               <div align="right" style="margin-top: 0px; padding-right:20px;">
+                <span style="padding-right: 10px;">
+                    <button class="okay" onclick="closePopupDelete()">확인</button>
+                </span>
+                <button class="cancel" onclick="closePopupDelete()">취소</button>
+               </div>
+            </div>
+        </div>
+        <script src="{%static 'popupDelete.js'%}"></script>
+    </div>
+
+    <div id="aside" style="position: absolute; top:311px; left: 58.5%;">
+        <div class="button" >
+            <button onclick="showPopupSend(false)" style="margin-top: 0px;" class="send-btn">전송</button>
+        </div>
+        <div id="popupSend" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    재생목록전송
+                </div>
+               <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                   <span style="font-size: 14px; text-align: center;">전송 하시겠습니까?</span>
+               </p>
+               <div align="right" style="margin-top: 0px; padding-right: 20px;">
+                <span style="padding-right: 10px;">
+                    <button class="okay" onclick="closePopupSend()">확인</button>
+                </span>
+                <button class="cancel" onclick="closePopupSend()">취소</button>
+               </div>
+            </div>
+        </div>
+        <script src="{%static 'popupSend.js'%}"></script>
+    </div>
+    </div>
+
+    <!--아래 표-->
+    <div id="section">
+        <table align="left" class="under-table">
+
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th style="width: 70px;">선택</th>
+                    <th style="width: 215px;">재생 목록</th>
+                    <th style="width: 165px;">등록일</th>
+                </tr>
+            </thead>
+            <!-- Table Header -->
+
+            <!-- Table Body -->
+            <tbody>
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                </tr><!-- Table Row -->
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                          </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr><!-- Darker Table Row -->
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr class="even">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+            <!-- Table Body -->
+
+        </table>
+    </div>
+
+    <div id="aside" style="position: absolute; top: 446px; left: 58.5%; right: auto;;">
+        <div class="button">
+            <a href="">
+                    <img src="{% static 'redpointer.jpg'%}">
+            </a>
+        </div>
+    </div>
+
+    <div id="aside" style="position: absolute; top: 486px; left: 58.5%; right: auto;;">
+        <div class="button">
+            <a href="">
+                <input style="margin-top: 0px; text-align: center;"  value="등록" class="under-register-btn">
+            </a>
+        </div>
+    </div>
+
+    <div id="aside" style="position: absolute; top:551px; left: 58.5%;">
+        <div class="button">
+            <button onclick="showPopupDeleteD(false)" style="margin-top: 0px;" class="delete-btn">삭제</button>
+        </div>
+        <div id="popupDeleteD" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    재생목록삭제
+                </div>
+               <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                   <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+               </p>
+               <div align="right" style="margin-top: 0px; padding-right:20px;">
+                <span style="padding-right: 10px;">
+                    <button class="okay" onclick="closePopupDeleteD()">확인</button>
+                </span>
+                <button class="cancel" onclick="closePopupDeleteD()">취소</button>
+               </div>
+            </div>
+        </div>
+        <script src="{%static 'popupDeleteD.js'%}"></script>
+    </div>
+
+    <div id="aside" style="position: absolute; top:616px; left: 58.5%;">
+        <div class="button">
+            <button onclick="showPopups(false)" style="margin-top: 0px;" class="send-btn">일정</button>
+        </div>
+        <div id="popups" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    재생일정
+                </div>
+                <div class="date" align="center">
+                    <table style="height: 105px; padding-top: 8px; padding-bottom: 8px; ">
+                        <tr>
+                            <td class="dateA">
+                                시작
+                            </td>
+                            <td>
+                                <input type="date" name="id" class="text-field" style="color: white; ">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dateA">
+                                종료
+                            </td>
+                            <td>
+                                <input type="date"  name="id" class="text-field" style="color: white; ">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="date" align="center">
+                    <table style="height: 125px; padding-top: 8px; padding-bottom: 8px; ">
+                        <input type="time">
+                        <input type="time">
+                    </table>
+                </div>
+
+
+                <span style="padding-right: 10px;">
+                    <button class="okay" onclick="play_schedule()">확인</button>
+                </span>
+                <button class="cancel" onclick="closePopups()">취소</button>
+
+            </div>
+            <script>
+                        function play_schedule() {
+                        const popup = document.querySelector('#popups');
+                        popup.classList.add('hide');
+                        var param = {};
+
+
+                                $.ajax({
+                                    url : '{% url 'play_schedule' %}',
+                                    type : 'POST',
+                                    data : param,
+                                    success:function(data){
+                                    },
+                                    error: function(){
+                                        alert('error');}
+                                });
+                        }
+            </script>
+        </div>
+
+        <script src="{%static 'popupSchedule.js'%}"></script>
+    </div>
+
+
+
+
+</body>
+{%endblock content%}

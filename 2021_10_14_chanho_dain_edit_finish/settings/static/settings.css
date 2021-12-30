@@ -1,0 +1,124 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*공통*/
+
+body{
+    font-size:12px;
+}
+
+/*table {width:800}*/
+.settings, th, td {border:3px solid #383838; border-collapse:collapse; color: #FFFFFF; width: 350px;}  /* 2열 크기*/
+
+/* 헤드부 */
+caption{height: 116px; width: 450px;}
+thead, th{ background-color:#454545 ; width: 100px;}   /* table 1 col 박스 색깔 (읽기 , 패턴, 밝기 등) */
+
+/* 버튼 */
+.setting-ok{
+    background-color: #636363;
+    color: white;
+    width: 120px;
+    height: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.inBorder {
+    background-color: #636363;
+    color: white;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.RED {
+    background-color: #ED1C24;
+    color: white;
+    display: inline;
+    width: 100px;
+    height: 25px;
+    border: none;
+}
+.GREEN {
+    background-color: #22B14C;
+    color: white;
+    display: inline;
+    width: 100px;
+    height: 25px;
+    border: none;
+}
+.BLUE {
+color: white;
+display: inline;
+width: 100px;
+height: 25px;
+border: none;
+ }
+.WHITE {
+    background-color: #FFFFFF;
+color: BLACK;
+display: inline;
+width: 100px;
+height: 25px;
+border: none;
+ }
+.BLACK {
+    background-color: #000000;
+    color: white;
+    display: inline;
+    width: 100px;
+    height: 25px;
+    border: none;
+}
+.VIDEO {
+    background-color: #636363;
+    color: white;
+    display: inline;
+    width: 100px;
+    height: 25px;
+    border: none;
+}
+.brigtness_button1{
+    background-color: #636363;
+    color: white;
+    display: inline;
+    width: 100px;
+    height: 25px;
+    border: none;
+}
+.input_brigtness1{
+    background-color: #454545;
+    border: 2px solid #888888;
+    width: 90px;
+    height: 20px;
+    border-radius: 3px;
+    text-decoration: white;
+    color: white;
+}
+
+.text-field{
+    background-color: #454545; 
+    border: 2px solid #888888;
+    width: 90px;
+    height: 20px;
+    border-radius: 3px;
+    text-decoration: white;
+    color: white;
+}
+
+tbody a:link{
+    font-size:12px;
+    font-family:굴림;
+    text-decoration:none;
+}
+
+tbody a:visited{
+    font-size:12px;
+    color:#454545;
+    font-family:굴림;
+    text-decoration:none;
+
+ }
+tbody a:hover{ text-decoration:underline;}
+tbody a:active { font-size:13px; font-family:궁서;}

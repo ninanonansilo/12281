@@ -1,0 +1,20 @@
+{
+	"id": "qqqq",
+	"pw": "qqqq",
+	"setup_place": "efawef",
+	"setup_day": {
+		"year": "2021",
+		"month": "12",
+		"day": "12",
+		"hour": "12",
+		"minute": "12",
+		"second": "12"
+	},
+	"display": {
+		"width": "60",
+		"height": "64"
+	},
+	"max_brightness": "62",
+	"serial": "1111111111111111",
+	"company_name": "qq"
+}

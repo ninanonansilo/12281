@@ -1,0 +1,160 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+    <link rel="stylesheet" href="{%static 'base.css'%}">
+    <title>Actvision 정보</title>
+    <style>
+        .box{
+            margin: 0 auto;
+            width: 200px;
+            height: 300px;
+            border:3px solid #383838;
+            margin-top: 15%;
+
+        }
+        table, tr, td {
+            border : 1px solid #797979;
+            border-collapse: collapse;
+        }
+        .homepage_btn{
+          width:180px;
+          height: 26px;
+          border: none;
+          background-color: #454545;
+          cursor: pointer;
+          color: white;
+          border : 1px solid #797979;
+          margin-top: 22px;
+          margin-left: 10px;
+        }
+        .homepage_btn:hover{
+          background-color: #7e7e7e;
+        }
+        .logout_btn{
+            border:none;
+            background-color: #636363;
+            color: white;
+            width: 100px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body bgcolor="#454545">
+    <header>
+        <nav>
+          <div>
+            <ul class="nav-container">
+              <a class="LOGO_img">
+                <img src="{%static 'navLogo.jpg'%}">
+              </a>
+              <li class="nav-item">
+                <a href="{% url 'movie.html' %}" class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                  <img class="media" id="imgMovie" src="{%static 'media_admin.png'%}">
+                  {% else %}
+                  <img class="media" id="imgMovie" src="{%static 'media.jpg'%}">
+                  {% endif %}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'image.html' %}" class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                  <img class="media"  id="imgEvent" src="{%static 'event_admin.png'%}">
+                  {% else %}
+                  <img class="media"  id="imgEvent" src="{%static 'event.jpg'%}">
+                  {% endif %}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'settings.html' %}"  class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                  <img class="media" id="imgSetting" src="{%static 'setting_admin.png'%}">
+                {% else %}
+                  <img class="media"  id="imgSetting" src="{%static 'setting.jpg'%}">
+                {% endif %}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'inform.html' %}" class="nav-link">
+                  <img class="media" id="img" src="{%static 'clickinform.jpg'%}">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'register.html' %}" class="nav-link">
+                  {% if user.profile.is_admin == True %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register.jpg'%}">
+                  {% else %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register_admin.jpg'%}">
+                  {% endif %}
+                </a>
+              </li>
+              <li class="user_inform">
+                <ul>
+                  <li>ID    :{{userinfo}}</li>
+                  <li name="serial">Serial:{{user.profile.player_serial}}</li>
+                </ul>
+              </li>
+              <li>
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <button class="logout_btn">Logout</button>
+                    </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+    <div class="box">
+        <table align=center style="margin-top: 10px; color: white;" width="180px" height="130" cellspacing ="0" cellpadding="0">
+            <tr>
+                <td style="text-align: center;">언어 선택</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            한국어
+                        </label>
+                      </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          English
+                        </label>
+                      </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            中文
+                        </label>
+                      </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            日本語
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <button type="button" class="homepage_btn" onclick="location.href='/static/manual.pdf'">사용설명서</button>
+        <button type="button" onclick="location.href='http://evam.co.kr/' " class="homepage_btn">홈페이지</button>
+        <button type="button" onclick="location.href='mailto: evam@evam.co.kr' " class="homepage_btn">Contact us
+        </button>
+    </div>
+
+</body>
+{%endblock content%} 

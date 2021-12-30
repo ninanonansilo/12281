@@ -1,0 +1,93 @@
+﻿[
+	{
+		"time": {
+			"year": "9999",
+			"month": "10",
+			"day": "4",
+			"hour": "20",
+			"minute": "21",
+			"second": "44"
+		},
+		"type": "video",
+		"action": "play",
+		"title": [
+			"candle.avi"
+		]
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "10",
+			"day": "4",
+			"hour": "20",
+			"minute": "21",
+			"second": "49"
+		},
+		"type": "video",
+		"action": "stop"
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "10",
+			"day": "4",
+			"hour": "20",
+			"minute": "21",
+			"second": "50"
+		},
+		"type": "image",
+		"action": "play",
+		"title": "pikachu.jpg"
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "10",
+			"day": "4",
+			"hour": "20",
+			"minute": "21",
+			"second": "59"
+		},
+		"type": "image",
+		"action": "stop"
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "10",
+			"day": "05",
+			"hour": "05",
+			"minute": "21",
+			"second": "34"
+		},
+		"type": "string",
+		"action": "play",
+		"title": "문자테스트",
+		"detail_info": {
+			"x": "0",
+			"y": "0",
+			"width": "40",
+			"height": "40",
+			"scroll_fix": "1",
+			"play_speed": "3",
+			"play_count": "10",
+			"font_name": "NanumGothic",
+			"font_size": "40",
+			"play_second": "10",
+			"thickness_italics": "2",
+			"red_green_blue": "(19, 59, 205)"
+		}
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "10",
+			"day": "4",
+			"hour": "20",
+			"minute": "22",
+			"second": "9"
+		},
+		"type": "string",
+		"action": "stop"
+	}
+]

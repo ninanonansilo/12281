@@ -1,0 +1,20 @@
+{
+	"id": "admin",
+	"pw": "administrator",
+	"setup_place": "admin",
+	"setup_day": {
+		"year": "2021",
+		"month": "09",
+		"day": "27",
+		"hour": "13",
+		"minute": "30",
+		"second": "03"
+	},
+	"display": {
+		"width": "80",
+		"height": "64"
+	},
+	"max_brightness": "63",
+	"serial": "superuseraccount",
+	"company_name": "admin"
+}

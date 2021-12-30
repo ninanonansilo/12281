@@ -1,0 +1,20 @@
+{
+	"id": "mclmcl",
+	"pw": "mclmcl",
+	"setup_place": "경상북도 경산시 대학로 280 영남대학교 기계IT대학 정보통신공학과 303호",
+	"setup_day": {
+		"year": "2021",
+		"month": "06",
+		"day": "17",
+		"hour": "15",
+		"minute": "15",
+		"second": "27"
+	},
+	"display": {
+		"width": "80",
+		"height": "64"
+	},
+	"max_brightness": "63",
+	"serial": "1000000063aab834",
+	"company_name": "영남대학교 이동통신연구실"
+}

@@ -1,0 +1,31 @@
+﻿[
+	{
+		"time": {
+			"year": "2021",
+			"month": "09",
+			"day": "30",
+			"hour": "14",
+			"minute": "57",
+			"second": "56",
+			"alltime": "20210930145756"
+		},
+		"type": "video",
+		"action": "play",
+		"title": [
+			"default_video.mp4"
+		]
+	},
+	{
+		"time": {
+			"year": "9999",
+			"month": "01",
+			"day": "01",
+			"hour": "00",
+			"minute": "00",
+			"second": "00",
+			"alltime": "99990101000000"
+		},
+		"type": "video",
+		"action": "stop"
+	}
+]

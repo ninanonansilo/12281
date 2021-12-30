@@ -1,0 +1,38 @@
+{
+   "Pattern": "5",
+   "Brightness_Control": {
+      "Mode": "0",
+      "Brightness": "32",
+      "CDS_Value": "0",
+      "Auto_Brightness": {
+         "min": "-1",
+         "max": "-1"
+      },
+      "Auto_CDS": {
+         "min": "-1",
+         "max": "-1"
+      },
+      "mode": "1"
+   },
+   "Power_Control": {
+      "Manual_ONOFF": "-1",
+      "Mode": "-1",
+      "Auto_ON": {
+         "min": "-1",
+         "max": "-1"
+      },
+      "Auto_OFF": {
+         "min": "-1",
+         "max": "-1"
+      }
+   },
+   "Time": {
+      "year": "2021",
+      "month": "09",
+      "day": "05",
+      "hour": "12",
+      "minute": "21",
+      "second": "07"
+   },
+   "Current_Time": "read"
+}

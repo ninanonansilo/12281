@@ -1,0 +1,54 @@
+@charset "utf-8";
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: #454545;
+    align-items: center;
+}
+
+/*table {width:800}*/
+.settings, th, td {border-collapse:collapse; align-items: center; text-align: center;}  /* 2열 크기*/
+
+/* 헤드부 */
+th{background-color: #EEEEEE; color: black; height: 25px; border-bottom: 5px solid #454545;}
+.th_first{ width: 70px;}
+.th_second{width: 350px;}
+.th_third{width: 240px;}
+.odd{ background-color: #EEEEEE; height: 25px;}
+.even{ background-color: #C8C8C8; height: 25px;}
+
+#contents{
+    width: 660px;
+    height: 195px;
+    position: relative;
+    overflow: auto;
+    margin-top: 116px;
+    border: 2px solid #EEEEEE;
+}
+
+#contents table{
+    table-layout: fixed; 
+}
+
+.bx_tb1{
+    zoom: 1;
+    height: 100%;
+}
+
+#chooseFile {
+    visibility: hidden;
+}
+
+.img-btn{
+    color: white; 
+    background-color: #636363; 
+    width: 60px; 
+    height: 28px; 
+    padding-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}

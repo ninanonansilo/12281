@@ -1,0 +1,994 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<head>
+  <title>Actvision 설정</title>
+  <link rel="stylesheet" href="{%static 'base.css'%}">
+    <link rel="stylesheet" href="{%static 'settings.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        test();
+
+    });
+    </script>
+
+
+ <style>
+        .BLUE{
+        background-color: #0000FF;
+        }
+        .BLUE:hover{
+        background-color:#0000CD;
+
+        }
+        .logout_btn{
+            border:none;
+            background-color: #636363;
+            color: white;
+            width: 100px;
+            height: 80px;
+        }
+    </style>
+
+</head>
+
+<body bgcolor="#454545">
+  <header>
+    <nav>
+      <div>
+        <ul class="nav-container">
+          <a class="LOGO_img">
+            <img src="{%static 'navLogo.jpg'%}">
+          </a>
+          <li class="nav-item">
+            <a href="{% url 'movie.html' %}" class="nav-link">
+              <img class="media" id="img" src="{%static 'media.jpg'%}">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'image.html' %}" class="nav-link">
+              <img class="media" id="img" src="{%static 'event.jpg'%}">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'settings.html' %}"  class="nav-link">
+              <img class="media" id="img" src="{%static 'clicksetting.jpg'%}">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'inform.html' %}" class="nav-link">
+              <img class="media" id="img" src="{%static 'inform.jpg'%}">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'register.html' %}" class="nav-link">
+                {% if user.profile.is_admin == True %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register.jpg'%}">
+                {% else %}
+                    <img class="media" onclick="toggleImgRegister()" id="imgRegister" src="{%static 'register_admin.jpg'%}">
+                {% endif %}
+            </a>
+          </li>
+        <li class="user_inform" style="font-size: 16px;">
+                <ul>
+                  <li>ID    :{{userinfo}}</li>
+                  <li name="serial">Serial:{{user.profile.player_serial}}</li>
+                </ul>
+        </li>
+              <li>
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <button class="logout_btn">Logout</button>
+                    </a>
+              </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+<table id = "setting" align="center" class="settings">
+    <!-- 헤드부 -->
+    <thead>
+        <caption></caption>
+    </thead>
+
+    <!-- 바디부 -->
+    <tbody style="text-align: center;">
+        <!-- 읽기 -->
+        <tr style="height: 50px; text-align: center;">
+            <th>읽기 </th>
+            <td>
+              <div class="button">
+                  <script>
+
+function reload()
+{
+    location.reload();
+}
+setTimeout(function selectHref() {
+
+
+
+var list_context = JSON.parse("{{ context|escapejs }}");
+var selectHref_brightness_mode = -1
+
+
+bright_input = list_context['bright_check']
+$("#input_brigtness").val(bright_input);
+
+
+CDS_input = list_context['CDS_check']
+$("#input_CDS_Value").val(CDS_input);
+
+
+
+auto_bright_max_input = list_context['auto_bright_max_check']
+$("#max_brigtness").val(auto_bright_max_input);
+
+
+auto_bright_min_input = list_context['auto_bright_min_check']
+$("#min_brigtness").val(auto_bright_min_input);
+
+
+auto_CDS_max_input = list_context['auto_CDS_max_check']
+$("#max_CDS").val(auto_CDS_max_input);
+
+
+auto_CDS_min_input = list_context['auto_CDS_min_check']
+$("#min_CDS").val(auto_CDS_min_input);
+
+auto_on_hour_input = list_context['auto_on_hour_check']
+$("#Auto_Power_On_hour").val(auto_on_hour_input);
+
+
+auto_on_min_input = list_context['auto_on_min_check']
+$("#Auto_Power_On_min").val(auto_on_min_input);
+
+
+auto_off_hour_input = list_context['auto_off_hour_check']
+$("#Auto_Power_Off_hour").val(auto_off_hour_input);
+
+auto_off_min_input = list_context['auto_off_min_check']
+$("#Auto_Power_Off_min").val(auto_off_min_input);
+
+var brightness_property1 = document.getElementById("brightness_manual");
+var brightness_property2 = document.getElementById("brightness_auto_time");
+var brightness_property3 = document.getElementById("brightness_auto_CDS");
+selectHref_brightness_mode = list_context['brightness_mode']
+if(selectHref_brightness_mode == '0')
+{
+    brightness_property1.style.backgroundColor = "#202020"
+    count_manual = 1
+}
+if(selectHref_brightness_mode == '1')
+{
+    brightness_property2.style.backgroundColor = "#202020"
+    count_time = 1
+}
+if(selectHref_brightness_mode == '2')
+{
+    brightness_property3.style.backgroundColor = "#202020"
+    count_CDS = 1
+}
+
+var powermode_property1 = document.getElementById("powermodemanual");
+var powermode_property2 = document.getElementById("powermodeauto");
+selectHref_powermode = list_context['powermode']
+if(selectHref_powermode == '0')
+{
+    powermode_property1.style.backgroundColor = "#202020"
+   var count_powermode_manual = 1;
+
+}
+if(selectHref_powermode == '1')
+{
+    powermode_property2.style.backgroundColor = "#202020"
+    var count_powermode_auto = 1;
+}
+
+
+var manualcontrol_property1 = document.getElementById("manualcontrolon");
+var manualcontrol_property2 = document.getElementById("manualcontroloff");
+selectHref_manualcontrol = list_context['manualcontrol']
+if(selectHref_manualcontrol == '0')
+{
+    manualcontrol_property1.style.backgroundColor = "#202020"
+   var count_manual_control_on = 1;
+
+}
+if(selectHref_manualcontrol == '1')
+{
+    manualcontrol_property2.style.backgroundColor = "#202020"
+    var count_manual_control_off = 1;
+}
+
+
+
+
+}, 100);
+
+</script>
+                <button style="margin-top: 0px;" onclick="reload(); selectHref()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  class="setting-ok">설정값 확인</button>
+              </div>
+             </td>
+        </tr>
+
+        <!-- 패턴 -->
+         <tr style="height: 70px;">
+            <th>패턴 </th>
+            <td style="text-align: center;">
+              <table style="width: 320px; height: 60px; margin-left: 14px;">
+                <tr>
+                  <td style="border: none;"><input type="button" onclick="red()"  onMouseover="this.style.background='tomato';"
+                                                   onMouseout="this.style.background='RED';"value="RED" class="RED" /></td>
+                  <td style="border: none;"><input type="button" onclick="green()" onMouseover="this.style.background='#00ff00';"
+                                                   onMouseout="this.style.background='#22B14C';" value="GREEN" class="GREEN" /></td>
+
+                  <td style="border: none;"><input type="button" onclick="blue()"   value="BLUE" class="BLUE" /></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"><input type="button" onclick="white()" onMouseover="this.style.background='#E0EBFF';"
+                                                   onMouseout="this.style.background='#FFFFFF';" value="WHITE" class="WHITE" /></td>
+                  <td style="border: none;"><input type="button" onclick="black()" onMouseover="this.style.background='#282828';"
+                                                   onMouseout="this.style.background='#000000';"value="BLACK" class="BLACK" /></td>
+                  <td style="border: none;"><input type="button" onclick="video()" onclick="black()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';" value="VIDEO" class="VIDEO" /></td>
+                </tr>
+                  <script>
+function red() {
+var input = "1"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function green() {
+var input = "2"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    //alert("패턴 GREEN 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function blue() {
+var input = "3"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    //alert("패턴 BLUE 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function white() {
+var input = "4"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    //alert("패턴 WHITE 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function black() {
+var input = "0"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    //alert("패턴 BLACK 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function video() {
+var input = "5"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    //alert("패턴 VIDEO 설정")
+    },
+    error: function(){
+
+        alert('');}
+});
+
+    }
+               </script>
+              </table>
+
+                <div>
+
+                </div>
+             </td>
+        </tr>
+
+        <!-- 밝기 -->
+        <tr style="height: 230px;">
+            <th>밝기</th>
+            <td>
+              <table style="width: 320px; margin-left: 14px;">
+                  <tr>
+                      <td style="border: none;"><input type="button" id="brightness_manual"
+                                                       onclick="check_Brightness_mode_manual(); bright_auto();"
+                                                       value="수동" class="VIDEO"/></td>
+                      <td style="border: none;"><input type="button" id="brightness_auto_time"
+                                                       onclick="check_Brightness_mode_auto_time(); bright_auto_time();"
+                                                       value="자동(시간)" class="VIDEO"/></td>
+                      <td style="border: none;"><input type="button" id="brightness_auto_CDS"
+                                                       onclick="check_Brightness_mode_auto_CDS(); bright_auto_CDS();"
+                                                       value="자동(조도)" class="VIDEO"/></td>
+                      <script>
+
+
+var count_manual = 0;
+var count_time = 0
+var count_CDS = 0
+
+    function bright_auto()
+    {
+        var brightness_property1 = document.getElementById("brightness_manual");
+        var brightness_property2 = document.getElementById("brightness_auto_time");
+        var brightness_property3 = document.getElementById("brightness_auto_CDS");
+        if (count_manual == 0 ){
+        count_manual = 1;
+        count_time = 0;
+        count_CDS = 0;
+        brightness_property1.style.backgroundColor = "#202020"
+        brightness_property2.style.backgroundColor = "#606060"
+        brightness_property3.style.backgroundColor = "#606060"
+                        }
+        else{
+         count_manual = 0;
+         brightness_property1.style.backgroundColor = "#606060"
+        }
+
+    }
+
+    function bright_auto_time()
+    {
+
+        var brightness_property1 = document.getElementById("brightness_manual");
+        var brightness_property2 = document.getElementById("brightness_auto_time");
+        var brightness_property3 = document.getElementById("brightness_auto_CDS");
+        if (count_time == 0 ){
+        count_manual = 0;
+        count_time = 1;
+        count_CDS = 0;
+        brightness_property1.style.backgroundColor = "#606060"
+        brightness_property2.style.backgroundColor = "#202020"
+        brightness_property3.style.backgroundColor = "#606060"
+                        }
+        else{
+         count_time = 0;
+         brightness_property2.style.backgroundColor = "#606060"
+        }
+
+
+    }
+        function bright_auto_CDS()
+    {
+
+        var brightness_property1 = document.getElementById("brightness_manual");
+        var brightness_property2 = document.getElementById("brightness_auto_time");
+        var brightness_property3 = document.getElementById("brightness_auto_CDS");
+        if (count_CDS == 0 ){
+         count_manual = 0;
+        count_time = 0;
+        count_CDS = 1;
+        brightness_property1.style.backgroundColor = "#606060"
+        brightness_property2.style.backgroundColor = "#606060"
+        brightness_property3.style.backgroundColor = "#202020"
+                        }
+        else{
+         count_CDS = 0;
+         brightness_property3.style.backgroundColor = "#606060"
+        }
+
+
+
+
+    }
+function check_Brightness_mode_manual() {
+if(count_manual == 1)
+{
+    return
+}
+var input = "0"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function check_Brightness_mode_auto_time() {
+if(count_time == 1)
+{
+    return
+}
+var input = "1"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function check_Brightness_mode_auto_CDS() {
+if(count_CDS == 1)
+{
+    return
+}
+var input = "2"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+
+                    </script>
+                </tr>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+<div>
+<script>
+
+
+$(document).ready(function(){
+
+
+        $("#input_brigtness").val(bright_input);
+        var input = bright_input
+        $.ajax({
+                url : '{% url 'update_Brightness' %}',
+                type : 'POST',
+                data : input,
+                success:function(data){
+                },
+                error: function(){
+                    alert('error');}
+        });
+
+});
+ $(function() {
+
+  $('.text-field').tooltip()
+
+})
+
+
+</script>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <tr style="height: 5px;">
+                        <td style="border: none;">수동 밝기
+                        <td style="border: none;"><input type="text" title = "밝기의 최대값은 63입니다." id = "input_brigtness" class="text-field" style="color: white;"
+                         style="cursor:pointer;" aria-hidden="true" delay = "0.1" ></td>
+                        <td style="border: none;"><input type="button" onclick="update()" formmethod="post" id="brigtness_button" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO"></td>
+                    </tr>
+                    <script>
+function update() {
+       var input = document.getElementById("input_brigtness").value;
+        if(input == ""){
+            alert("숫자를 입력하세요")
+            return
+       }
+       else if(isNaN(input) == 1){
+            alert("문자는 포함할 수 없습니다")
+            return
+       }
+       else if(input.indexOf(".") != -1){
+            alert("소수점은 포함할 수 없습니다.")
+            return
+       }
+       else if(input < 0){
+             alert("수동 밝기의 최소값는 0, 최대값은 63입니다.")
+             return
+       }
+       else if(input > 63){
+             alert("최대 밝기인 63으로 변경됩니다.")
+           nnnn
+             input = "63"
+              $("#input_brigtness").val("63");
+            }
+       $.ajax({
+    url : '{% url 'update_Brightness' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+
+    },
+    error: function(){
+        alert('숫자를 입력하세요 최소 : 0, 최대 : 63');}
+});
+
+    }
+                    </script>
+                </form>
+</div>
+                  <td style="border: none;"></td>
+<div>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <tr style="height: 5px;">
+<script>
+
+</script>
+                        <td style="border: none;">조도값</td>
+                        <td style="border: none;"><input type="text" id = "input_CDS_Value"  title = "조도값의 최대값은 255입니다." class="text-field" style="color: white;"
+                        style="cursor:pointer;" aria-hidden="true"></td>
+                        <td style="border: none;"><input type="button" onclick="update_CDS_Value()" formmethod="post" id="CDS_Value" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="읽기" class="VIDEO"></td>
+                        <script>
+function update_CDS_Value() {
+       var input = document.getElementById("input_CDS_Value").value;
+       if(input == ""){
+            alert("숫자를 입력하세요")
+            return
+       }
+       else if(isNaN(input) == 1){
+            alert("문자는 포함할 수 없습니다")
+            return
+       }
+       else if(input.indexOf(".") != -1){
+            alert("소수점은 포함할 수 없습니다.")
+            return
+       }
+       else if(input < 0){
+             alert("조도값의 최소값는 0, 최대값은 255입니다.")
+             return
+       }
+       else if(input > 255){
+             alert("최대 조도값인 255으로 변경됩니다.")
+             input = "255"
+              $("#input_CDS_Value").val("255");
+            }
+       $.ajax({
+    url : '{% url 'update_CDS_Value' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('숫자를 입력하세요 최소 : 0, 최대 : 63');}
+});
+
+    }
+                    </script>
+                    </tr>
+                </form>
+</div>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;">최소</td>
+                  <td style="border: none;">최대</td>
+                </tr>
+ <div>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <td style="border: none;">자동 밝기</td>
+                        <td style="border: none;"><input type="text" id = "min_brigtness"  class="text-field" style="color: white;"></td>
+                        <td style="border: none;"><input type="text" id = "max_brigtness"  class="text-field" style="color: white;"></td>
+                    </tr>
+
+                <tr>
+
+
+                  <td style="border: none;">조도값</td>
+                  <td style="border: none;"><input type="text" id = "min_CDS" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "max_CDS" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"><input type="button" formmethod="post" onclick="update_min_max()" id="min_max" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO" /></td>
+                    <script>
+function update_min_max() {
+       let min_br = document.getElementById("min_brigtness").value;
+       let max_br = document.getElementById("max_brigtness").value;
+       let min_CDS = document.getElementById("min_CDS").value;
+       let max_CDS = document.getElementById("max_CDS").value;
+
+       let param = {'min_br' : min_br,
+       'max_br' : max_br,
+       'min_CDS' : min_CDS,
+       'max_CDS' : max_CDS,}
+       if(min_br == "" || max_br == ""  || min_CDS == "" || max_CDS == ""){
+                    alert("숫자를 입력하세요")
+                    return
+               }
+        else if(isNaN(min_br) == 1 || isNaN(max_br) == 1  || isNaN(min_CDS) == 1 || isNaN(max_CDS) == 1){
+                    alert("문자는 포함할 수 없습니다")
+                    return
+               }
+        else if(min_br.indexOf(".") != -1 || max_br.indexOf(".") != -1 ||min_CDS.indexOf(".") != -1 ||max_CDS.indexOf(".") != -1 ){
+                    alert("소수점은 포함할 수 없습니다.")
+                    return
+               }
+        else if(min_br < 0){
+                     alert("밝기의 최소값은 0입니다.")
+                     return
+               }
+        else if(max_br < 0){
+                     alert("밝기의 최소값은 0입니다.")
+                     return
+                    }
+        else if(max_br > 63){
+                     alert("밝기의 최대값인 63으로 변경됩니다.")
+                     max_br = "63"
+                     $("#max_brigtness").val("63");
+                     if(max_CDS > 255){
+                     alert("조도값의 최대값인 255로 변경됩니다.")
+                     max_CDS = "255"
+                     $("#max_CDS").val("255");
+        }
+        }
+        else if(min_CDS < 0){
+                     alert("조도값의 최소값은 0입니다.")
+                     return
+        }
+        else if(max_CDS < 0){
+                     alert("조도값의 최소값은 0입니다.")
+                     return
+        }
+        else if(max_CDS > 255){
+                     alert("조도값의 최대값인 255로 변경됩니다.")
+                     max_CDS = "255"
+                     $("#max_CDS").val("255");
+                     if(max_br > 63){
+                     alert("밝기의 최대값인 63으로 변경됩니다.")
+                     max_br = "63"
+                     $("#max_brigtness").val("63");
+        }
+        }
+        else if(max_br < min_br){
+                     alert("밝기의 최대값이 최소값보다 작을 수 없습니다.")
+                     return
+        }
+        else if(max_CDS < min_CDS){
+                    alert("조도값의 최대값이 최소값보다 작을 수 없습니다.")
+                    return
+        }
+           $.ajax({
+        url : '{% url 'update_min_max' %}',
+        type : 'POST',
+        data : param,
+        success:function(data){
+        },
+        error: function(){
+            alert('error');}
+    });
+        }
+                    </script>
+                </tr>
+                </form>
+</div>
+              </table>
+             </td>
+        </tr>
+        <!-- 전원 -->
+<div>
+        <tr style="height: 200px;">
+            <th>전원</th>
+            <td>
+              <table style="width: 320px; margin-left: 14px;">
+                <tr>
+<script>
+var count_powermode_manual = 0;
+var count_powermode_auto = 0
+
+    function powermodemanual_button()
+    {
+        var powermode_property1 = document.getElementById("powermodemanual");
+        var powermode_property2 = document.getElementById("powermodeauto");
+        if (count_powermode_manual == 0 ){
+        count_powermode_manual = 1;
+        count_powermode_auto = 0;
+        powermode_property1.style.backgroundColor = "#202020"
+        powermode_property2.style.backgroundColor = "#606060"
+                        }
+        else{
+         count_powermode_manual = 0;
+         powermode_property1.style.backgroundColor = "#606060"
+        }
+
+    }
+
+    function powermodeauto_button()
+    {
+
+        var powermode_property1 = document.getElementById("powermodemanual");
+        var powermode_property2 = document.getElementById("powermodeauto");
+        if (count_powermode_auto == 0 ){
+        count_powermode_manual = 0;
+        count_powermode_auto = 1;
+        powermode_property1.style.backgroundColor = "#606060"
+        powermode_property2.style.backgroundColor = "#202020"
+                        }
+        else{
+         count_powermode_auto = 0;
+         powermode_property2.style.backgroundColor = "#606060"
+        }
+
+
+    }
+function power_mode_manual() {
+if(count_powermode_manual == 1){
+return
+}
+var input = "0"
+       $.ajax({
+    url : '{% url 'power_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function power_mode_auto() {
+if(count_powermode_auto == 1){
+return
+}
+var input = "1"
+       $.ajax({
+    url : '{% url 'power_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+    }
+
+</script>
+                    <td style="border: none;">전원 모드</td>
+                    <td style="border: none;"><input type="button" id="powermodemanual"
+                                                     onclick="power_mode_manual(); powermodemanual_button();" value="수동"
+                                                     class="VIDEO"/></td>
+                    <td style="border: none;"><input type="button" id="powermodeauto"
+                                                     onclick="power_mode_auto(); powermodeauto_button();" value="자동"
+                                                     class="VIDEO"/></td>
+
+                </tr>
+                <tr>
+<script>
+
+var count_manual_control_on = 0;
+var count_manual_control_off = 0
+
+    function manualcontrolon_button()
+    {
+        var manualcontrol_property1 = document.getElementById("manualcontrolon");
+        var manualcontrol_property2 = document.getElementById("manualcontroloff");
+        if (count_manual_control_on == 0 ){
+        count_manual_control_on = 1;
+        count_manual_control_off = 0;
+        manualcontrol_property1.style.backgroundColor = "#202020"
+        manualcontrol_property2.style.backgroundColor = "#606060"
+                        }
+        else{
+         count_manual_control_on = 0;
+         manualcontrol_property1.style.backgroundColor = "#606060"
+        }
+
+    }
+
+    function manualcontroloff_button()
+    {
+
+        var manualcontrol_property1 = document.getElementById("manualcontrolon");
+        var manualcontrol_property2 = document.getElementById("manualcontroloff");
+        if (count_manual_control_off == 0 ){
+        count_manual_control_on = 0;
+        count_manual_control_off = 1;
+        manualcontrol_property1.style.backgroundColor = "#606060"
+        manualcontrol_property2.style.backgroundColor = "#202020"
+                        }
+        else{
+         count_manual_control_off = 0;
+         manualcontrol_property2.style.backgroundColor = "#606060"
+        }
+
+
+    }
+function manual_control_on() {
+if(count_manual_control_on == 1)
+{
+    return;
+}
+var input = "1"
+       $.ajax({
+    url : '{% url 'manual_control' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){ 
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function manual_control_off() {
+if(count_manual_control_off == 1)
+{
+    return;
+}
+var input = "0"
+       $.ajax({
+    url : '{% url 'manual_control' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    },
+    error: function(){
+        alert('');}
+});
+    }
+
+</script>
+                    <td style="border: none;"><p style="width: 100px;">수동 제어</p></td>
+                    <td style="border: none;"><input type="button" id="manualcontrolon"
+                                                     onclick="manual_control_on(); manualcontrolon_button();" on
+                                                     value="ON" class="VIDEO"/></td>
+                    <td style="border: none;"><input type="button" id="manualcontroloff"
+                                                     onclick="manual_control_off(); manualcontroloff_button();"
+                                                     value="OFF" class="VIDEO"/></td>
+                </tr>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+        <form method="post" action="">{% csrf_token %}
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;">시</td>
+                  <td style="border: none;">분</td>
+                </tr>
+                <tr>
+                  <td style="border: none;">자동 ON</td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_On_hour" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_On_min" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;">자동 OFF</td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_Off_hour" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_Off_min" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"><input type="button" formmethod="post" onclick="update_on_off()" id="Auto_On_Off" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO" /></td>
+<script>
+function update_on_off() {
+   let on_hour = document.getElementById("Auto_Power_On_hour").value;
+   let on_min = document.getElementById("Auto_Power_On_min").value;
+   let off_hour = document.getElementById("Auto_Power_Off_hour").value;
+   let off_min = document.getElementById("Auto_Power_Off_min").value;
+
+   let param = {'on_hour' : on_hour,
+   'on_min' : on_min,
+   'off_hour' : off_hour,
+   'off_min' : off_min,}
+
+    if(on_hour == "" || on_min == ""  || off_hour == "" || off_min == ""){
+    alert("숫자를 입력하세요")
+    return
+    }
+    else if(isNaN(on_hour) == 1 || isNaN(on_min) == 1  || isNaN(off_hour) == 1 || isNaN(off_min) == 1){
+    alert("문자는 포함할 수 없습니다")
+    return
+    }
+    else if(on_hour.indexOf(".") != -1 || on_min.indexOf(".") != -1 ||off_hour.indexOf(".") != -1 ||off_min.indexOf(".") != -1 ){
+    alert("소수점은 포함할 수 없습니다.")
+    return
+    }
+    else if(on_hour < 0 || on_min < 0  || off_hour < 0 || off_min < 0){
+    alert("0 미만의 수는 입력할 수 없습니다.")
+    return
+    }
+    else if(on_hour >= 24 || off_hour >= 24){
+    alert("시간은 24시보다 작아야합니다.")
+    return
+    }
+    else if(off_min >= 60 || off_hour >= 60){
+    alert("분은 60분 보다 작아야합니다.")
+    return
+    }
+
+       $.ajax({
+    url : '{% url 'update_on_off' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    },
+    error: function(){
+        alert('error');}
+});
+    }
+</script>
+                </tr>
+        </form>
+</div>
+              </table>
+             </td>
+        </tr>
+
+        <!-- 시간-->
+         <tr style="height: 50px;">
+            <th>시간</th>
+            <td>
+              <table style="width: 320px; text-align: center;" align="center">
+                <tr>
+                  <td style="border: none;"><input type="text" class="text-field" id = "timenow" style="width: 200px; color: white;"></td>
+                  <td style="border: none;"><input type="button" onclick="timenow()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="시간 설정" class="VIDEO" /></td>
+                    <script>
+function timenow() {
+today = new Date();
+let hours = today.getHours(); // 시
+let minutes = today.getMinutes();  // 분
+let seconds = today.getSeconds();
+ $("#timenow").val(hours + ':' + minutes + ':' + seconds);
+    }
+    </script>
+                </tr>
+              </table>
+
+             </td>
+        </tr>
+    </tbody>
+
+
+</table>
+</body>
+{% endblock content %}
